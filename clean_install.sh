@@ -18,7 +18,8 @@ prep_stage=(
     pipewire
     polkit-gnome
     python-requests
-    terminus-font-nerd
+    terminus-font
+    ttf-terminus-nerd
     wireplumber
     xclip
     )
