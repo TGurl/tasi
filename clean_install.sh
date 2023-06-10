@@ -31,11 +31,14 @@ nvidia_stage=(
     )
 
 install_stage=(
+    arc-gtk-theme
     blueman
     bluez
     bluez-utils
     bspwm
     btop
+    dmenu
+    dunst
     file-roller
     firefox
     gvfs
@@ -43,16 +46,24 @@ install_stage=(
     lxappearance
     mpv
     network-manager-applet
+    neovim
     noto-fonts-emoji
     pamixer
     papirus-icon-theme
     pavucontrol
+    picom-ibhagwan-git
+    polybar
+    ranger
+    redshift
+    rofi
     sddm
     starship
     sxhkd
     ttf-jetbrains-mono-nerd
+    ttf-unifont
     thunar
     thunar-archive-plugin
+    vim
     xfce4-settings
     )
 
