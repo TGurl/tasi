@@ -38,6 +38,17 @@ zsh_stage=(
     zsh-syntax-highlighting
 )
 
+xserver_stage=(
+    xorg-server
+    xorg-apps
+    xorg-xinit
+    xf86-input-elographics
+    xf86-input-libinput
+    xf86-input-vmmouse
+    xf86-video-vmware
+    mesa
+    )
+
 install_stage=(
     arc-gtk-theme
     blueman
@@ -232,16 +243,22 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
         echo -e "options nvidia-drm modeset=1" | sudo tee -a /etc/modprobe.d/nvidia.conf &>> $INSTLOG
     fi
 
-    # ZSH stage
-    echo -e "$CNT - Installing ZSH..."
-    for ITEM in ${zsh_stage[@]}; do
+    # Stage 1 - xserver stage
+    echo -e "$CNT - Installing Xserver, this may take a while..."
+    for ITEM in ${xserver_stage[@]}; do
         install_software $ITEM
     done
 
-    # Stage 1 - main components
+    # Stage 2 - main components
     echo -e "$CNT - Installing main components, this may take a while..."
     for SOFTWR in ${install_stage[@]}; do
         install_software $SOFTWR 
+    done
+    
+    # Stage 3 - ZSH stage
+    echo -e "$CNT - Installing ZSH..."
+    for ITEM in ${zsh_stage[@]}; do
+        install_software $ITEM
     done
 
     # Start the bluetooth service
