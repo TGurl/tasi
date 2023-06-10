@@ -18,6 +18,7 @@ prep_stage=(
     pipewire
     polkit-gnome
     python-requests
+    terminus-font-nerd
     wireplumber
     xclip
     )
@@ -48,6 +49,7 @@ install_stage=(
     dunst
     file-roller
     firefox
+    github-cli
     gvfs
     kitty
     lxappearance
@@ -71,6 +73,8 @@ install_stage=(
     thunar
     thunar-archive-plugin
     vim
+    xdg-user-dirs
+    xdg-user-dirs-gtk
     xfce4-settings
     )
 
@@ -254,7 +258,8 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     echo -e "$CNT - Don't forget to change the shell with: chsh -s /usr/bin/zsh!"
 
     # creating a simple zshrc
-    echo -e "autoload -Uz compinit promptinit\ncompinit\npromptinit\n\nprompt walters" | tee -a $ZSHRC &>> $INSTLOG
+    echo -e "autoload -Uz compinit promptinit\ncompinit\npromptinit\n\nprompt walters" >>! $ZSHRC &>> $INSTLOG
+    echo 'source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme' >>! $ZSHRC &>> $INSTLOG
 
     # Enable the sddm login manager service
     echo -e "$CNT - Enabling the SDDM Service..."
