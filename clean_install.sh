@@ -19,7 +19,7 @@ prep_stage=(
     polkit-gnome
     python-requests
     wireplumber
-    wl-clipboard
+    xclip
     )
 
 nvidia_stage=(
@@ -108,7 +108,7 @@ install_software() {
         echo -e "$COK - $1 is already installed."
     else
         # no package found so installing
-        echo -e "$CNT - Now installing $1 ."
+        echo -en "$CNT - Now installing $1 ."
         yay -S --noconfirm $1 &>> $INSTLOG &
         show_progress $!
         # test to make sure it's installed
