@@ -8,7 +8,7 @@
 # TransGirl Arch System Installer
 #
 # Loosely based upon the script by SolDoesTech
-
+# https://github.com/SolDoesTech/HyprV4/blob/main/set-hypr
 
 # Define the software to be installed
 prep_stage=(
