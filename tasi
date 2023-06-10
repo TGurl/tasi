@@ -1,0 +1,86 @@
+#!/usr/bin/env python
+import os
+from shutil import which
+import argparse
+
+
+class Tasi:
+    def __init__(self, args):
+        self.proglist = self.read_textfile('packages.x86_64')
+        self.quiet = args.verbose
+
+    def read_textfile(self, filename):
+        if not os.path.exists(filename):
+            print("'packages.x86_64' does not exist!")
+            print('Exiting...')
+            quit(0)
+
+        with open(filename, 'r') as f:
+            lines = f.read().splitlines()
+        return lines
+
+    def is_tool(self, name):
+        return which(name) is not None
+
+    def aur_clone(self, appname):
+        curdir = os.getcwd()
+        if self.quiet:
+            os.system(f'git clone https://aur.archlinux.org/{appname} &>> install.log')
+        else:
+            os.system(f'git clone https://aur.archlinux.org/{appname}')
+        os.chdir(appname)
+        if self.quiet:
+            os.system('makepkg -si --noconfirm &>> /dev/null')
+        else:
+            os.system('makepkg -si --noconfirm')
+        os.chdir(curdir)
+
+    def install_helpers(self):
+        if not self.is_tool('yay'):
+            print(">> Installing yay-bin from the AUR...")
+            self.aur_clone('yay-bin')
+        if not self.is_tool('paru'):
+            print(">> Installing paru-bin from the AUR...")
+            self.aur_clone('paru-bin')
+
+    def compile_command(self):
+        cmd = 'yay -S --needed --noconfirm '
+        self.proglist = self.read_textfile('packages.x86_64')
+        total = len(self.proglist)
+        for num, item in enumerate(self.proglist, start=1):
+            if item.startswith('#') or item == '':
+                continue
+            cmd += item
+            if num < total:
+                cmd += ' '
+        return cmd
+
+    def run(self):
+        if os.path.exists('install.log'):
+            os.remove('install.log')
+
+        os.system('clear')
+        print('+------------------------------------------------+')
+        print("|         TransGirls Arch System Installer       |")
+        print('+------------------------------------------------+')
+        if not self.is_tool('yay') or not self.is_tool('paru'):
+            self.install_helpers()
+
+        print(">> Installing system, this might take a while...")
+        cmd = self.compile_command()
+        if self.quiet:
+            os.system(f'{cmd} &>> install.log')
+        else:
+            os.system(f'{cmd}')
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', '--verbose',
+                        action='store_true',
+                        default=False,
+                        required=False,
+                        help='Show install progress')
+    args = parser.parse_args()
+    app = Tasi(args)
+    app.run()
