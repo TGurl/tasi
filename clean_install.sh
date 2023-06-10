@@ -250,7 +250,8 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     # -- zsh-newuser-install -f
     ZSHRC="~/.zshrc"
     echo -e "$CNT - Setting up ZSH..."
-    chsh -s /usr/bin/zsh &>> $INSTLOG
+    # chsh -s /usr/bin/zsh &>> $INSTLOG
+    echo -e "$CNT - Don't forget to change the shell with: chsh -s /usr/bin/zsh!"
 
     # creating a simple zshrc
     echo -e "autoload -Uz compinit promptinit\ncompinit\npromptinit\n\nprompt walters" | tee -a $ZSHRC &>> $INSTLOG
