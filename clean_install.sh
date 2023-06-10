@@ -30,6 +30,13 @@ nvidia_stage=(
     libva-nvidia-driver-git
     )
 
+zsh_stage=(
+    zsh
+    zsh-completions
+    zsh-theme-powerlevel10k
+    zsh-syntax-highlighting
+)
+
 install_stage=(
     arc-gtk-theme
     blueman
@@ -221,6 +228,12 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
         echo -e "options nvidia-drm modeset=1" | sudo tee -a /etc/modprobe.d/nvidia.conf &>> $INSTLOG
     fi
 
+    # ZSH stage
+    echo -e "$CNT - Installing ZSH..."
+    for ITEM in ${zsh_stage[@]}; do
+        install_software $ITEM
+    done
+
     # Stage 1 - main components
     echo -e "$CNT - Installing main components, this may take a while..."
     for SOFTWR in ${install_stage[@]}; do
@@ -231,6 +244,16 @@ if [[ $INST == "Y" || $INST == "y" ]]; then
     # echo -e "$CNT - Starting the Bluetooth Service..."
     # sudo systemctl enable --now bluetooth.service &>> $INSTLOG
     # sleep 2
+
+    # Set ZSH as default shell
+    # -- autoload -Uz zsh-newuser-install
+    # -- zsh-newuser-install -f
+    ZSHRC="~/.zshrc"
+    echo -e "$CNT - Setting up ZSH..."
+    chsh -s /usr/bin/zsh &>> $INSTLOG
+
+    # creating a simple zshrc
+    echo -e "autoload -Uz compinit promptinit\ncompinit\npromptinit\n\nprompt walters" | tee -a $ZSHRC &>> $INSTLOG
 
     # Enable the sddm login manager service
     echo -e "$CNT - Enabling the SDDM Service..."
